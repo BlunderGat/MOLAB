@@ -24,7 +24,7 @@ warnings.filterwarnings('ignore')
 plt.rcParams['figure.figsize'] = (12, 8)
 sns.set_style("whitegrid")
 
-# Загрузка датасета по URL
+# Загрузка датасета
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
 df = pd.read_csv(url, sep=';')
 print(f"Размер датасета: {df.shape}")
@@ -124,7 +124,7 @@ for i in range(len(corr_matrix.columns)):
             strong_corr.append((corr_matrix.columns[i], corr_matrix.columns[j], corr_val))
 
 for col1, col2, corr in sorted(strong_corr, key=lambda x: abs(x[2]), reverse=True):
-    print(f"{col1} ↔ {col2}: {corr:.3f}")
+    print(f"{col1} <-> {col2}: {corr:.3f}")
 # Корреляции с качеством
 print("Корреляции с quality:")
 quality_corr = corr_matrix['quality'].sort_values(ascending=False)

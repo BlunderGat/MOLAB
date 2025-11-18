@@ -206,11 +206,11 @@ print("АНАЛИЗ ХАРАКТЕРИСТИК КЛАСТЕРОВ:")
 
 for cluster in sorted(df['cluster'].unique()):
     cluster_data = df[df['cluster'] == cluster]
-    print(f"\nКластер {cluster} ({len(cluster_data)} образцов):")
-    print(f"  • Среднее качество: {cluster_data['quality'].mean():.2f}")
-    print(f"  • Средний алкоголь: {cluster_data['alcohol'].mean():.2f}%")
-    print(f"  • Средняя летучая кислотность: {cluster_data['volatile acidity'].mean():.3f}")
-    print(f"  • Средние сульфаты: {cluster_data['sulphates'].mean():.3f}")
+    print(f"Кластер {cluster} ({len(cluster_data)} образцов):")
+    print(f"  Среднее качество: {cluster_data['quality'].mean():.2f}")
+    print(f"  Средний алкоголь: {cluster_data['alcohol'].mean():.2f}%")
+    print(f"  Средняя летучая кислотность: {cluster_data['volatile acidity'].mean():.3f}")
+    print(f"  Средние сульфаты: {cluster_data['sulphates'].mean():.3f}")
 
 """
 ВЫВОД:
