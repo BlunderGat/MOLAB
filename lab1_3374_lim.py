@@ -23,12 +23,10 @@ warnings.filterwarnings('ignore')
 # %matplotlib inline
 plt.rcParams['figure.figsize'] = (12, 8)
 sns.set_style("whitegrid")
-print("Библиотеки загружены")
 
 # Загрузка датасета по URL
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
 df = pd.read_csv(url, sep=';')
-print("Данные успешно загружены!")
 print(f"Размер датасета: {df.shape}")
 print(f"Колонки: {list(df.columns)}")
 
@@ -128,28 +126,63 @@ for i in range(len(corr_matrix.columns)):
 for col1, col2, corr in sorted(strong_corr, key=lambda x: abs(x[2]), reverse=True):
     print(f"{col1} ↔ {col2}: {corr:.3f}")
 # Корреляции с качеством
-print("\nКорреляции с quality:")
+print("Корреляции с quality:")
 quality_corr = corr_matrix['quality'].sort_values(ascending=False)
 for feat, corr in quality_corr.items():
     if feat != 'quality' and abs(corr) > 0.1:
         print(f"{feat}: {corr:.3f}")
 
+# Матрица графиков рассеивания для ключевых признаков
 print("МАТРИЦА ГРАФИКОВ РАССЕИВАНИЯ ДЛЯ КЛЮЧЕВЫХ ПРИЗНАКОВ:")
+
+# Вычисляем матрицу корреляций
+corr_matrix = df.corr()
+
 # Выбираем 4 наиболее коррелированных с качеством признака
-top_features = correlation_matrix['quality'].abs().sort_values(ascending=False).index[1:5]
+top_features = corr_matrix['quality'].abs().sort_values(ascending=False).index[1:5]
 print(f"Анализируемые признаки: {list(top_features)}")
+
 # Строим pairplot
 analysis_features = list(top_features) + ['quality']
 g = sns.pairplot(df[analysis_features], diag_kind='hist', hue='quality',
                  palette='RdYlBu', plot_kws={'alpha':0.7, 's':50})
 plt.suptitle('Взаимосвязи ключевых признаков с качеством вина', y=1.02, fontsize=14)
 plt.show()
+
 print("АНАЛИЗ ВЗАИМОСВЯЗЕЙ:")
 print("Alcohol <-> Quality: четкая положительная тенденция - чем выше алкоголь, тем лучше качество")
-print("Volatile acidity ↔ Quality: явная отрицательная зависимость - высокая летучая кислотность ухудшает качество")
+print("Volatile acidity <-> Quality: явная отрицательная зависимость - высокая летучая кислотность ухудшает качество")
 print("Sulphates <-> Quality: слабая положительная корреляция")
 print("Citric acid <-> Quality: умеренная положительная связь")
 print("НАБЛЮДЕНИЯ:")
 print("Качество вина образует кластеры по уровням (5,6,7)")
 print("Высококачественные вина (7-8) концентрируются в области высокого alcohol и низкой volatile acidity")
 print("Некоторые пары признаков показывают нелинейные зависимости")
+
+"""
+ВЫВОД:
+
+1. ДАТАСЕТ:
+   Набор данных: Red Wine Quality (UCI)
+   Предметная область: химические параметры красного вина
+   Характер данных: реальные измерения
+
+2. СТАТИСТИЧЕСКИЙ АНАЛИЗ:
+   Пропущенные значения отсутствуют
+   Выявлены выбросы в признаках: residual sugar, free sulfur dioxide
+   Распределения близки к нормальным с правосторонней асимметрией
+
+3. КОРРЕЛЯЦИОННЫЙ АНАЛИЗ:
+   Сильные корреляции: density-fixed acidity, free-total sulfur dioxide
+   Качество вина наиболее зависит от: alcohol (положительно), volatile acidity (отрицательно)
+   Слабые корреляции: pH-citric acid, residual sugar-other features
+
+4. ВЗАИМОСВЯЗИ ПРИЗНАКОВ:
+   Alcohol положительно влияет на качество
+   Volatile acidity отрицательно влияет на качество
+   Sulphates и citric acid слабо положительно коррелируют с качеством
+
+5. КЛАСТЕРИЗАЦИЯ ПО КАЧЕСТВУ:
+   Вина естественно группируются по уровням качества (5,6,7)
+   Высококачественные вина концентрируются в области высокого alcohol и низкой volatile acidity
+"""
